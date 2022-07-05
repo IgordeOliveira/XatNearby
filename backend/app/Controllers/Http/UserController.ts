@@ -6,12 +6,13 @@ import haversine from 'haversine-distance'
 export default class UserController {
 
     public async updateMyselfAndGetNearUsers({ request }: HttpContextContract) {
+
         const payload = await request.validate(UpdateUserValidator)
-        const lat: number = payload.lat
-        const lon: number = payload.lon
-        const users = await (await User.query().limit(5).orderByRaw("last_location <-> point (?, ?)", [lon, lat]))
+        const myLat: number = payload.lat
+        const myLon: number = payload.lon
+        const users = await (await User.query().limit(5).orderByRaw("last_location <-> point (?, ?)", [myLon, myLat]))
         const usersJSON = users.map((user) => { 
-            const distance = haversine({lat: user.latitude, lon: user.longitude}, {lat, lon}).toFixed()
+            const distance = haversine({lat: user.latitude, lon: user.longitude}, {lat: myLat, lon: myLon}).toFixed()
             return {...user.serialize(), distance: `${distance} meters`}
         })
         return usersJSON
