@@ -6,6 +6,7 @@ export default Factory.define(User, ({ faker }) => {
   const coordinates: any = faker.address.nearbyGPSCoordinate([-20.27884864807129,-40.298179626464844], 5, true)
   return {
     name: faker.name.firstName() + ' ' + faker.name.lastName(),
+    email: faker.internet.email().toLowerCase(),
     desc: faker.lorem.words(10),
     age: parseInt(faker.random.numeric(2)),
     latitude: coordinates[0],

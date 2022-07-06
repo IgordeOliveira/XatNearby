@@ -24,6 +24,8 @@ Route.get('/', async () => {
   return { hello: 'world' }
 })
 
-Route.put('users', 'UserController.updateMyselfAndGetNearUsers')
+Route.group(() => {
+  Route.put('users', 'UserController.updateMyselfAndGetNearUsers')
+}).middleware('auth')
 
-
+Route.post('login', 'AuthController.login')

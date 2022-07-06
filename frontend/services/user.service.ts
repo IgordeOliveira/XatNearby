@@ -10,14 +10,32 @@ interface LoginResponse {
   token: string;
 }
 
+export type User = {
+  id: number;
+  name: string;
+  desc: string;
+  age: number;
+  latitude: number;
+  longitude: number;
+  created_at: Date;
+  updated_at: Date;
+  distance: string;
+}
+
+export type Coordinates = {
+  lat: number,
+  lon: number
+}
+
 class Http {
   http: AxiosInstance;
+
   constructor() {
     const http = axios.create({
       baseURL: BASE_URL
     });
 
-    axios.interceptors.request.use(function (config) {
+    http.interceptors.request.use(function (config) {
 
       if (config.headers === undefined) {
         config.headers = {};
@@ -54,10 +72,13 @@ class Http {
     return this.http.request(args);
   }
 
-  async login(loginData: LoginData) {
+  async createOrLogin(loginData: LoginData) {
     return this.http.post<LoginResponse>('/login', loginData)
   }
 
+  async updateMySelfAndGetNearUsers(coords: Coordinates) {
+    return this.http.put<User[]>('/users', coords)
+  }
 
 }
 
