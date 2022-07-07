@@ -3,6 +3,9 @@ import { useState, useEffect  } from 'react';
 import Head from 'next/head'
 import { getPosition } from '../services/location.service'
 import user, {Coordinates, User} from '../services/user.service';
+import { SimpleGrid, Box, Container  } from '@chakra-ui/react'
+import Navbar from '../components/Navbar';
+import UserBox from '../components/UserBox';
 
 
 const Home: NextPage = () => {
@@ -31,20 +34,24 @@ const Home: NextPage = () => {
   if (!users) return <div>loading...</div>
 
   return (
-    <div >
+    <>
       <Head>
         <title>NearChatify</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main>
-        <pre> { JSON.stringify(users, null, 4) }</pre>
-      </main>
-
+      <Navbar />
+      <Container as="main" mt='56px' size='container.sm' p={0}>
+        <SimpleGrid spacing={1} columns={2}>
+        { users.map(user => (
+          <UserBox content={user}/>
+        )) 
+      }
+        </SimpleGrid>
+      </Container>
       <footer >
         
       </footer>
-    </div>
+    </>
   )
 }
 
