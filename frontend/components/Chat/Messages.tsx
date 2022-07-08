@@ -1,4 +1,5 @@
-import { Avatar, Flex, Text } from '@chakra-ui/react'
+import { Flex, Text } from '@chakra-ui/react'
+import { useEffect, useRef } from 'react'
 
 export type messageBag = {
   from: string,
@@ -8,21 +9,36 @@ export type messageBag = {
 interface Props {
   messageBag: messageBag[];
 }
+
 export default function ({ messageBag }: Props) {
+  const messageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (messageRef.current) {
+      console.log('scroll')
+      const element = messageRef.current;
+      messageRef.current.scroll({
+        top: element.scrollHeight,
+        left: 0,
+        behavior: "smooth"
+      })
+    }
+  }, [messageBag])
+  
   return (
-    <Flex overflowY="scroll" flexDirection="column" alignContent='flex-end' p="3" flex='1'>
+    <Flex overflowY="scroll" flexDirection="column" alignContent='flex-end' p="3" flex='1' ref={messageRef} pt='60px'>
       {messageBag.map((item, index) => {
         if (item.from === "me") {
           return (
             <Flex key={index} w="100%" justify="flex-end">
               <Flex
-                bg="black"
-                color="white"
-                minW="100px"
-                maxW="350px"
-                my="1"
-                p="3"
-                rounded='full'
+                bg="orange.100"
+                color="orange.900"
+                maxW="95%"
+                rounded='lg'
+                py='1'
+                px='2'
+                mt='2'
               >
                 <Text>{item.text}</Text>
               </Flex>
@@ -32,13 +48,14 @@ export default function ({ messageBag }: Props) {
           return (
             <Flex key={index} w="100%">
               <Flex
-                rounded='full'
-                bg="gray.100"
-                color="black"
-                minW="100px"
-                maxW="350px"
-                my="1"
-                p="3"
+                rounded='lg'
+                bg="gray.200"
+                color="grey.900"
+                maxW="95%"
+                py='1'
+                px='2'
+                mt='2'
+
               >
                 <Text>{item.text}</Text>
               </Flex>

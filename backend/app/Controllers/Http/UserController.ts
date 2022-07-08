@@ -10,7 +10,7 @@ export default class UserController {
         const payload = await request.validate(UpdateUserValidator)
         const myLat: number = payload.lat
         const myLon: number = payload.lon
-        const users = await (await User.query().limit(5).orderByRaw("last_location <-> point (?, ?)", [myLon, myLat]))
+        const users = await (await User.query().limit(10).orderByRaw("last_location <-> point (?, ?)", [myLon, myLat]))
         const usersJSON = users.map((user) => { 
             const distance = haversine({lat: user.latitude, lon: user.longitude}, {lat: myLat, lon: myLon}).toFixed()
             return {...user.serialize(), distance: `${distance} meters`}

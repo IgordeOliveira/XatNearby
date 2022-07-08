@@ -10,8 +10,6 @@ interface Props {
 
 const ChakraNextImage = chakra(Image);
 
-function getPhoto() {
-}
 const myLoader = ({src}) => {
   return src + crypto.randomBytes(20).toString('hex')
 

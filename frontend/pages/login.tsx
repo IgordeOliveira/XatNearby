@@ -8,6 +8,7 @@ import Router from 'next/router';
 import { z } from "zod";
 import client from '../services/user.service';
 
+
 const loginDataSchema = z.object({
 	name: z.string().min(1,{ message: "Can't be empty" }),
 	email: z.string().email(),

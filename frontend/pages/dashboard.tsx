@@ -3,7 +3,7 @@ import { useState, useEffect  } from 'react';
 import Head from 'next/head'
 import { getPosition } from '../services/location.service'
 import user, {Coordinates, User} from '../services/user.service';
-import { SimpleGrid, Box, Container  } from '@chakra-ui/react'
+import { SimpleGrid, Container  } from '@chakra-ui/react'
 import Navbar from '../components/Navbar';
 import UserBox from '../components/UserBox';
 
@@ -43,7 +43,7 @@ const Home: NextPage = () => {
       <Container as="main" mt='56px' size='container.sm' p={0}>
         <SimpleGrid spacing={1} columns={2}>
         { users.map(user => (
-          <UserBox content={user}/>
+          <UserBox content={user} key={user.id}/>
         )) 
       }
         </SimpleGrid>

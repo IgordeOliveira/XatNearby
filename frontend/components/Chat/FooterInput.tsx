@@ -1,25 +1,41 @@
-import { Flex, Input, Button } from "@chakra-ui/react";
+import { Flex, Input, IconButton } from "@chakra-ui/react";
+import { useForm } from "react-hook-form";
+import { RiSendPlane2Fill } from 'react-icons/ri'
+type FooterInputProps = {
+  handleSendMessage: (message: string) => void;
+}
 
-export default function() {
+type FormSchema = {
+  message: string
+}
+
+export default function ({ handleSendMessage }: FooterInputProps) {
+  const { register, handleSubmit, reset, formState: { isDirty } } = useForm<FormSchema>({ defaultValues: { message: "" } });
+
+  const sendMessage = handleSubmit((data) => {
+    handleSendMessage(data.message)
+    reset()
+  })
+
   return (
-    <Flex w="100%" p='1'>
-  	<Input
-    	placeholder="Type Something..."
-    	borderRadius="md"
-    	_focus={{
-      	border: "1px solid blue.500",
-    	}}
-  	/>
-  	<Button
-    	bg="blue.500"
-    	color="white"
-    	borderRadius="md"
-    	_hover={{
-      	bg: "blue.100",
-    	}}
-  	>
-    	Send
-  	</Button>
-	</Flex>
+    <form onSubmit={sendMessage}>
+
+      <Flex w="100%" p='1' direction='row'>
+        <Input
+          {...register("message")}
+          placeholder="Type Something..."
+          borderRadius="md"
+        />
+        <IconButton 
+          ml='2'
+          colorScheme='orange'
+          type="submit"
+          icon={<RiSendPlane2Fill />}
+          aria-label='Send'
+          fontSize='21px'
+          disabled={!isDirty}
+        />
+      </Flex>
+    </form>
   )
 }
