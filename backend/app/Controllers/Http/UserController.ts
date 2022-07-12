@@ -26,10 +26,12 @@ export default class UserController {
         
         authUser.save()
 
-        const users = await (await User.query().limit(10).orderByRaw("last_location <-> point (?, ?)", [myLon, myLat]))
-        const usersJSON = users.map((user) => { 
-            const distance = haversine({lat: user.latitude, lon: user.longitude}, {lat: myLat, lon: myLon}).toFixed()
-            return {...user.serialize(), distance: `${distance} meters`}
+        const users = await (await User.query().limit(11).orderByRaw("last_location <-> point (?, ?)", [myLon, myLat]))
+        //                              remove my user from the list
+        const usersJSON = users.filter(user => user.id !== authUser.id).map((user) => { 
+            let distance = haversine({lat: user.latitude, lon: user.longitude}, {lat: myLat, lon: myLon})
+            distance = distance / 1000
+            return {...user.serialize(), distance: `${distance.toFixed(1)} km`}
         })
         return usersJSON
     }
