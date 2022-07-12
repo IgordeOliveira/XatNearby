@@ -41,7 +41,7 @@ const Home: NextPage = () => {
       </Head>
       <Navbar />
       <Container as="main" mt='56px' size='container.sm' p={0}>
-        <SimpleGrid spacing={1} columns={2}>
+        <SimpleGrid columns={2}>
         { users.map(user => (
           <UserBox content={user} key={user.id}/>
         )) 

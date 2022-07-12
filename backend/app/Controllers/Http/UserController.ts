@@ -5,11 +5,27 @@ import haversine from 'haversine-distance'
 
 export default class UserController {
 
-    public async updateMyselfAndGetNearUsers({ request }: HttpContextContract) {
+    public async updateMyselfAndGetNearUsers({ request, auth, response }: HttpContextContract) {
 
         const payload = await request.validate(UpdateUserValidator)
         const myLat: number = payload.lat
         const myLon: number = payload.lon
+       
+        const authUser = auth.user;
+
+        if(!authUser) {
+            return response.status(404).json({
+                status: 'failed',
+                message: 'user not found'
+            })
+        }
+
+        authUser.latitude = myLat
+        authUser.longitude = myLat
+        authUser.lastLocation =[myLat.toString(), myLon.toString()]
+        
+        authUser.save()
+
         const users = await (await User.query().limit(10).orderByRaw("last_location <-> point (?, ?)", [myLon, myLat]))
         const usersJSON = users.map((user) => { 
             const distance = haversine({lat: user.latitude, lon: user.longitude}, {lat: myLat, lon: myLon}).toFixed()

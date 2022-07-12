@@ -1,10 +1,16 @@
 import { Flex, Box, Spacer, Heading, Center, chakra} from '@chakra-ui/react'
 import { HiCog } from "react-icons/hi";
+import { User } from '../../services/user.service'
 
 const ChakraHiCog = chakra(HiCog);
 
+export interface ChatHeaderProps {
+	user: {
+		name: string
+	}
+}
 
-export default function () {
+export default function ({user}: ChatHeaderProps) {
 	return (
 		<Flex as="header" position="fixed" top='0' 
 			bgGradient='linear-gradient(90deg, rgba(17,80,122,1) 9%, rgba(230,122,0,0.6674019949776786) 92%)'
@@ -16,7 +22,7 @@ export default function () {
 			>
 			<Center>
 				<Heading fontSize='xl' fontWeight="400" color="brand.white">
-					Testing
+					{user.name}
 				</Heading>
 			</Center>
 			<Spacer />

@@ -2,11 +2,20 @@ import { Flex, Text } from '@chakra-ui/react'
 import { useEffect, useRef } from 'react'
 
 export type messageBag = {
-  from: string,
-  text: string
+  // id?:         number;
+  content:    string;
+  // created_at?: Date;
+  isFromMe:   boolean;
 }
 
-interface Props {
+export type messageBagResponse = {
+  id?:         number;
+  content:    string;
+  created_at?: Date;
+  isFromMe:   boolean;
+}
+
+export interface Props {
   messageBag: messageBag[];
 }
 
@@ -28,7 +37,7 @@ export default function ({ messageBag }: Props) {
   return (
     <Flex overflowY="scroll" flexDirection="column" alignContent='flex-end' p="3" flex='1' ref={messageRef} pt='60px'>
       {messageBag.map((item, index) => {
-        if (item.from === "me") {
+        if (item.isFromMe) {
           return (
             <Flex key={index} w="100%" justify="flex-end">
               <Flex
@@ -40,7 +49,7 @@ export default function ({ messageBag }: Props) {
                 px='2'
                 mt='2'
               >
-                <Text>{item.text}</Text>
+                <Text>{item.content}</Text>
               </Flex>
             </Flex>
           );
@@ -57,7 +66,7 @@ export default function ({ messageBag }: Props) {
                 mt='2'
 
               >
-                <Text>{item.text}</Text>
+                <Text>{item.content}</Text>
               </Flex>
             </Flex>
           );

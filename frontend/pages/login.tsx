@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { Center, Button, FormControl, FormLabel, Input, Container, Box, Heading, Stack, FormHelperText, Alert, AlertIcon } from '@chakra-ui/react'
 import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
-import Router from 'next/router';
+import { useRouter } from 'next/router'
 import { z } from "zod";
 import client from '../services/user.service';
 
@@ -19,6 +19,7 @@ export type LoginData = z.infer<typeof loginDataSchema>;
 
 const Login: NextPage = () => {
 	const [error, setError] = useState(false)
+	const router = useRouter()
 	const { register, handleSubmit, formState: { errors } } = useForm<LoginData>({
 		resolver: zodResolver(loginDataSchema)
 	})
@@ -27,7 +28,7 @@ const Login: NextPage = () => {
 		try{
 			const response = await client.createOrLogin(loginData)
 			localStorage.setItem('token', response.data.token)
-			Router.replace('/dashboard')
+			router.replace('/dashboard')
 		}catch(err){console.error(err); setError(true)}
 	})
 

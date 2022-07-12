@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { LoginData } from "../pages/login";
 import Router from 'next/router';
+import { messageBag } from "../components/Chat/Messages";
 
 const BASE_URL = 'http://localhost:3333'
 
@@ -10,15 +11,21 @@ interface LoginResponse {
   token: string;
 }
 
-export type User = {
-  id: number;
-  name: string;
-  desc: string;
-  age: number;
-  latitude: number;
+export interface ChatResponse {
+  uuid:           string;
+  senderUserId:   number;
+  receiverUser: User;
+  lastMessages: messageBag[];
+}
+
+export interface User {
+  id:        number;
+  name:      string;
+  email:     string;
+  desc:      string;
+  age:       number;
+  latitude:  number;
   longitude: number;
-  created_at: Date;
-  updated_at: Date;
   distance: string;
 }
 
@@ -29,7 +36,6 @@ export type Coordinates = {
 
 class Http {
   http: AxiosInstance;
-
   constructor() {
     const http = axios.create({
       baseURL: BASE_URL
@@ -40,7 +46,7 @@ class Http {
       if (config.headers === undefined) {
         config.headers = {};
       }
-      const token = window.localStorage.getItem("token");
+      const token = localStorage.getItem("token");
       if (token) config.headers['Authorization'] = `Bearer ${token}`
 
       return config;
@@ -78,6 +84,10 @@ class Http {
 
   async updateMySelfAndGetNearUsers(coords: Coordinates) {
     return this.http.put<User[]>('/users', coords)
+  }
+
+  async findOrCreateChat(toUserId: number) {
+    return this.http.post<ChatResponse>('/chat', {toUserId})
   }
 
 }

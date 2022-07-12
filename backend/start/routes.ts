@@ -26,6 +26,13 @@ Route.get('/', async () => {
 
 Route.group(() => {
   Route.put('users', 'UserController.updateMyselfAndGetNearUsers')
+
+  Route.group(() => {
+    Route.post('/', 'ChatController.findOrCreate')
+  }).prefix('/chat')
+
 }).middleware('auth')
+
+
 
 Route.post('login', 'AuthController.login')
