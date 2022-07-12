@@ -20,9 +20,6 @@ export default class Message extends BaseModel {
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
-  @column.dateTime({ autoCreate: true, serializeAs: null })
-  public updatedAt: DateTime
-
   @hasOne(() => Chat)
   public chat: HasOne<typeof Chat>
 
