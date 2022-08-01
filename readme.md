@@ -1,0 +1,1 @@
+Developed in 1 week and a half, this project uses next js ( react ) and adonis js ( node js ) and allows a realtime chat with users close to you
